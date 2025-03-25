@@ -1,9 +1,14 @@
 import { Route, Routes } from "react-router-dom"
 import { Home } from "../pages/Home"
+import { NavBarComponent } from "../components/NavBarComponent"
 export const AppRouter = () => {
 
-    return <Routes>
-        <Route path="/" element={<Home />} />
-    </Routes>
+    return <>
+        <NavBarComponent />
+        <Routes>
+            <Route path="/" element={<Home />} />
+        </Routes>
+
+    </>
 
 }
