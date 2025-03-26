@@ -17,7 +17,7 @@ export const NavBarComponent = () => {
     const navigate = useNavigate()
 
     return (
-        <AppBar position="sticky" sx={{zIndex: 999}}>
+        <AppBar position="sticky" sx={{ zIndex: 999 }}>
             <Container>
                 <Toolbar>
                     <Box sx={{ flexGrow: 1 }}>
@@ -50,7 +50,7 @@ export const NavBarComponent = () => {
                     }
 
                     {
-                        location.pathname !== '/login' && authStatus && <LoggedInformation logOut={logout} reserves={() => navigate('/my-events')} userName={user.name}/>
+                        location.pathname !== '/login' && authStatus && user && <LoggedInformation logOut={logout} reserves={() => navigate('/my-events')} userName={user.name ? user.name : 'Usuario'} />
                     }
 
                     {

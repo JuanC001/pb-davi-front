@@ -11,6 +11,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers'
 import { ModalEvent } from '../components/Organizer/ModalEvent'
 import Swal from 'sweetalert2'
 import { ModalOrganizer } from '../components/Organizer/ModalOrganizer'
+import dayjs from 'dayjs'
 
 export const MyEvents = () => {
 
@@ -70,6 +71,14 @@ const EventOrganizerComponent = ({ eventOrganizer, events, refresh }) => {
             capacity: Number(ev.capacity),
             remainingTickets: Number(ev.remainingTickets),
             image: ev.image,
+        }
+
+        if (dayjs(ev.startDate) > dayjs(ev.endDate)) {
+            return Swal.fire('Error', 'La fecha de inicio no puede ser mayor a la fecha de finalización', 'error')
+        }
+
+        if (ev.remainingTickets > ev.capacity) {
+            return Swal.fire('Error', 'Los cupos restantes no pueden ser mayores a la capacidad', 'error')
         }
 
         try {
@@ -151,6 +160,7 @@ const EventCardOrganizer = ({ event, refresh }) => {
             }).then(async (result) => {
                 if (result.isConfirmed) {
                     const res = await deleteEvent(event.id)
+                    refresh()
                     Swal.fire(
                         'Eliminado!',
                         'El evento ha sido eliminado.',
