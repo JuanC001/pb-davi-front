@@ -1,19 +1,12 @@
-import { Box, Button, Card, CardActions, CardContent, CardMedia, Divider, Grid2, IconButton, Stack, Typography } from '@mui/material'
-import React, { useContext } from 'react'
+import { Box, Grid2, Stack, Typography } from '@mui/material'
+import React from 'react'
 import { useEvents } from '../hooks/useEvents'
 
-import { useCurrency } from '../hooks/useCurrency';
-import { UserContext } from '../context/UserContext';
-import { useNavigate } from 'react-router-dom';
 import { EventCard } from '../components/Events/EventCard';
 
 export const Home = () => {
 
-    const { user } = useContext(UserContext)
-
     const { events } = useEvents()
-    const { formatter } = useCurrency()
-    const navigate = useNavigate()
 
     return (
         <Box minHeight={'100vh'} width={'100%'} sx={{ overflow: 'hidden' }}>
