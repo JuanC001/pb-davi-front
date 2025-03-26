@@ -4,6 +4,7 @@ import Swal from 'sweetalert2'
 
 import { useAuth } from '../hooks/useAuth'
 import { useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
 export const Login = () => {
 
     const [isRegister, setIsRegister] = useState(false)
@@ -35,13 +36,15 @@ const LoginForm = ({ onRegister }) => {
 
     const { login } = useAuth()
     const { register, getValues } = useForm()
+    const navigate = useNavigate()
     const handleLogin = async (e) => {
         e.preventDefault()
         try {
             const { email, password } = getValues()
             const res = await login(email, password)
             console.log(res)
-            Swal.fire('Success', 'Sesión iniciada correctamente', 'success')
+            if (!res) return Swal.fire('Error', 'Usuario o contraseña incorrecta', 'error')
+            navigate('/')
         } catch (error) {
             if (error.response.data.message === 'Invalid email or password') {
                 return Swal.fire('Error', 'Usuario o contraseña incorrecta', 'error')

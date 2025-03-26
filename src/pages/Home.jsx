@@ -31,7 +31,7 @@ export const Home = () => {
                         },
                         color: 'white',
                         fontWeight: 'bold'
-                    }} align={'center'}>Conéctate</Typography>
+                    }} align={'center'}>ConéctaTE</Typography>
                     <Typography variant={'h1'} align={'center'} sx={{
                         fontSize: '26px',
                         color: 'white',

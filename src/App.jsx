@@ -2,6 +2,7 @@ import { BrowserRouter } from 'react-router-dom'
 import './App.css'
 import { AppRouter } from './routes/AppRouter'
 import { createTheme, CssBaseline, ThemeProvider } from '@mui/material'
+import { UserProvider } from './context/UserProvider'
 
 function App() {
 
@@ -23,11 +24,13 @@ function App() {
   return (
     <>
       <CssBaseline />
-      <ThemeProvider theme={theme}>
-        <BrowserRouter>
-          <AppRouter />
-        </BrowserRouter>
-      </ThemeProvider>
+      <UserProvider>
+        <ThemeProvider theme={theme}>
+          <BrowserRouter>
+            <AppRouter />
+          </BrowserRouter>
+        </ThemeProvider>
+      </UserProvider>
     </>
   )
 }
