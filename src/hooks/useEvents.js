@@ -6,6 +6,11 @@ export const useEvents = (handleFetch = true) => {
 
     const [events, setEvents] = useState([])
 
+    const getEvent = async (id) => {
+        const { data } = await conectateApi.get(`/events/${id}`)
+        return data
+    }
+
     const getEvents = async () => {
         const { data } = await conectateApi.get("/events")
         setEvents(data)
@@ -38,6 +43,7 @@ export const useEvents = (handleFetch = true) => {
         createEvent,
         updateEvent,
         deleteEvent,
+        getEvent
     }
 
 }

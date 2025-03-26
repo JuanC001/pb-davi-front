@@ -2,10 +2,10 @@ import { Box, Button, Card, CardActions, CardContent, CardMedia, Divider, Grid2,
 import React, { useContext } from 'react'
 import { useEvents } from '../hooks/useEvents'
 
-import ShareIcon from '@mui/icons-material/Share';
-import InfoIcon from '@mui/icons-material/Info';
 import { useCurrency } from '../hooks/useCurrency';
 import { UserContext } from '../context/UserContext';
+import { useNavigate } from 'react-router-dom';
+import { EventCard } from '../components/Events/EventCard';
 
 export const Home = () => {
 
@@ -13,6 +13,7 @@ export const Home = () => {
 
     const { events } = useEvents()
     const { formatter } = useCurrency()
+    const navigate = useNavigate()
 
     return (
         <Box minHeight={'100vh'} width={'100%'} sx={{ overflow: 'hidden' }}>
@@ -84,40 +85,7 @@ export const Home = () => {
                 <Stack direction={'row'} spacing={2} sx={{ justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap' }} useFlexGap>
                     {
                         events.length > 0 && events.map((event, index) => (
-                            <Card sx={{ width: 400 }} key={index}>
-                                <CardMedia
-                                    sx={{ height: 240 }}
-                                    image={event.image ? event.image : '/placeholder.webp'}
-                                    title="green iguana"
-                                />
-                                <CardContent>
-                                    <Typography gutterBottom variant="h5" component="div">
-                                        {event.name}
-                                    </Typography>
-                                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                        {event.description}
-                                    </Typography>
-                                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                        {formatter(event.price)}
-                                    </Typography>
-                                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                        {event.location}
-                                    </Typography>
-                                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                        Quedan <strong>{event.remainingTickets}</strong> cupos
-                                    </Typography>
-                                </CardContent>
-                                <CardActions>
-                                    <IconButton color='primary' aria-label="share">
-                                        <ShareIcon />
-                                    </IconButton>
-
-                                    <IconButton color='primary' aria-label="info">
-                                        <InfoIcon />
-                                    </IconButton>
-
-                                </CardActions>
-                            </Card>
+                            <EventCard event={event} key={index} />
                         ))
                     }
                 </Stack>

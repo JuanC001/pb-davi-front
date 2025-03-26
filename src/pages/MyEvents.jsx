@@ -7,11 +7,13 @@ import { useCurrency } from '../hooks/useCurrency'
 
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { LocalizationProvider } from '@mui/x-date-pickers'
+
 import { ModalEvent } from '../components/Organizer/ModalEvent'
 import Swal from 'sweetalert2'
 import { ModalOrganizer } from '../components/Organizer/ModalOrganizer'
 import dayjs from 'dayjs'
+import { useUserEvent } from '../hooks/useUserEvent'
+import { EventCard } from '../components/Events/EventCard'
 
 export const MyEvents = () => {
 
@@ -19,6 +21,28 @@ export const MyEvents = () => {
     const [createOrganizationModal, setCreateOrganizationModal] = useState(false)
 
     const { eventsOrganizer, getEventOrganizerByOwner } = useEventsOrganizer()
+    const { userEvents, deleteUserEvent, getUserEvents } = useUserEvent(true, user.id)
+
+    const handleDelete = async (id) => {
+        try {
+            await Swal.fire({
+                title: '¿Estás seguro?',
+                text: "No podrás revertir esto!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    const res = await deleteUserEvent(user.id, id)
+                    Swal.fire('Evento eliminado', 'El evento ha sido eliminado correctamente', 'success')
+                    getUserEvents(user.id)
+                }
+            })
+        } catch (error) {
+            console.error(error)
+            Swal.fire('Error', 'Ha ocurrido un error', 'error')
+        }
+    }
 
     useEffect(() => {
         if (user) {
@@ -31,6 +55,13 @@ export const MyEvents = () => {
             <Grid2 item size={{ xs: 12, lg: 7 }} sx={{ p: 2 }}>
                 <Typography variant='h3'>Mis eventos</Typography>
                 <Typography variant='body1'>Aquí podrás ver los eventos que has reservado</Typography>
+                {userEvents.length > 0 ? <Stack spacing={2} sx={{ flexWrap: 'wrap' }} direction='row' useFlexGap>
+                    {userEvents.map((event, index) =>
+                        <EventCard event={event.event} key={index} width={300} height={140}
+                            shareInfoAction={false} handleDelete={handleDelete}
+                            redirect={false} />
+                    )}
+                </Stack> : <Typography variant='body2'>No tienes eventos reservados</Typography>}
             </Grid2>
 
             <Grid2 component={Paper} item size={{ xs: 12, lg: 5 }} sx={{ p: 2, minHeight: '100vh' }}>
