@@ -14,6 +14,22 @@ export const RegisterForm = ({ onLogin }) => {
 
             const { email, password, password2, name, surname, document } = getValues()
 
+            if (password.length < 6) {
+                return Swal.fire('Error', 'La contraseña debe tener al menos 6 caracteres', 'error')
+            }
+
+            if (!password.match(/[a-z]/g) || !password.match(/[A-Z]/g)) {
+                return Swal.fire('Error', 'La contraseña debe tener al menos una letra mayúscula y una minúscula', 'error')
+            }
+
+            if (!password.match(/[0-9]/g)) {
+                return Swal.fire('Error', 'La contraseña debe tener al menos un número', 'error')
+            }
+
+            if (!password.match(/[^a-zA-Z0-9]/g)) {
+                return Swal.fire('Error', 'La contraseña debe tener al menos un caracter especial', 'error')
+            }
+
             if (password !== password2) {
                 return Swal.fire('Error', 'Las contraseñas no coinciden', 'error')
             }
