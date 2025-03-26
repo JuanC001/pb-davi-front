@@ -11,8 +11,17 @@ export const useEvents = (handleFetch = true) => {
         setEvents(data)
     }
 
+    const updateEvent = async (id, data) => {
+        const res = await conectateApi.put(`/events/${id}`, data)
+        return res
+    }
+
+    const deleteEvent = async (id) => {
+        const res = await conectateApi.delete(`/events/${id}`)
+        return res
+    }
+
     useEffect(() => {
-        console.log("useEffect")
         if (handleFetch) {
             getEvents()
         }
@@ -20,7 +29,9 @@ export const useEvents = (handleFetch = true) => {
 
     return {
         events,
-        getEvents
+        getEvents,
+        updateEvent,
+        deleteEvent
     }
 
 }

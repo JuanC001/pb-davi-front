@@ -50,7 +50,7 @@ export const NavBarComponent = () => {
                     }
 
                     {
-                        location.pathname !== '/login' && authStatus && <LoggedInformation logOut={logout} />
+                        location.pathname !== '/login' && authStatus && <LoggedInformation logOut={logout} reserves={() => navigate('/my-events')} />
                     }
 
                     {
@@ -62,7 +62,7 @@ export const NavBarComponent = () => {
                     }
 
                     {drawerOpen && <Collapse in={drawerOpen}>
-                        <DrawerMenu open={drawerOpen} onClose={() => setDrawerOpen(false)} />
+                        <DrawerMenu open={drawerOpen} onClose={() => setDrawerOpen(false)} logOut={logout} reserves={() => navigate('/my-events')} />
                     </Collapse>
                     }
                 </Toolbar>
