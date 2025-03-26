@@ -17,7 +17,7 @@ export const NavBarComponent = () => {
     const navigate = useNavigate()
 
     return (
-        <AppBar position="sticky">
+        <AppBar position="sticky" sx={{ zIndex: 999 }}>
             <Container>
                 <Toolbar>
                     <Box sx={{ flexGrow: 1 }}>
@@ -50,7 +50,7 @@ export const NavBarComponent = () => {
                     }
 
                     {
-                        location.pathname !== '/login' && authStatus && <LoggedInformation logOut={logout} />
+                        location.pathname !== '/login' && authStatus && user && <LoggedInformation logOut={logout} reserves={() => navigate('/my-events')} userName={user.name ? user.name : 'Usuario'} />
                     }
 
                     {
@@ -62,7 +62,7 @@ export const NavBarComponent = () => {
                     }
 
                     {drawerOpen && <Collapse in={drawerOpen}>
-                        <DrawerMenu open={drawerOpen} onClose={() => setDrawerOpen(false)} />
+                        <DrawerMenu open={drawerOpen} onClose={() => setDrawerOpen(false)} logOut={logout} reserves={() => navigate('/my-events')} />
                     </Collapse>
                     }
                 </Toolbar>
@@ -74,9 +74,9 @@ export const NavBarComponent = () => {
 const LoginButton = ({ onClick }) => {
     return <Button variant="text" color='white' onClick={onClick}>Iniciar Sesión</Button>
 }
-const LoggedInformation = ({ logOut, profile, reserves }) => {
+const LoggedInformation = ({ logOut, profile, reserves, userName }) => {
     return <Stack direction={'row'} sx={{ display: { xs: 'none', sm: 'flex' } }}>
-        <MenuItem color='white' sx={{ gap: 1 }} onClick={profile}> Perfil<PersonIcon fontSize='small' /></MenuItem>
+        <MenuItem color='white' sx={{ gap: 1 }} onClick={profile}>Hola, {userName}<PersonIcon fontSize='small' /></MenuItem>
         <MenuItem color='white' sx={{ gap: 1 }} onClick={reserves}>Mis Eventos <CalendarMonthIcon fontSize='small' /></MenuItem>
         <MenuItem color='white' onClick={logOut} sx={{ gap: 1 }}> Cerrar Sesión <LogoutIcon fontSize='small' /></MenuItem>
     </Stack>

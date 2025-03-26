@@ -1,12 +1,15 @@
 import { Box, Button, Card, CardActions, CardContent, CardMedia, Divider, Grid2, IconButton, Stack, Typography } from '@mui/material'
-import React from 'react'
+import React, { useContext } from 'react'
 import { useEvents } from '../hooks/useEvents'
 
 import ShareIcon from '@mui/icons-material/Share';
 import InfoIcon from '@mui/icons-material/Info';
 import { useCurrency } from '../hooks/useCurrency';
+import { UserContext } from '../context/UserContext';
 
 export const Home = () => {
+
+    const { user } = useContext(UserContext)
 
     const { events } = useEvents()
     const { formatter } = useCurrency()
@@ -63,7 +66,9 @@ export const Home = () => {
                             <strong>ConéctaTE</strong> es una plataforma para descubrir, organizar y participar en eventos. Facilita la conexión entre personas a través de conferencias, conciertos y reuniones. Con un diseño intuitivo, permite gestionar inscripciones y recibir actualizaciones en tiempo real, creando una experiencia interactiva y accesible para todos. 🚀
                         </Typography>
                     </Grid2>
+
                 </Grid2>
+
             </Box>
 
             <Box sx={{
@@ -76,41 +81,46 @@ export const Home = () => {
                 alignItems: 'center',
                 mx: 'auto',
             }}>
-                {
-                    events.length > 0 && events.map((event, index) => (
-                        <Card sx={{ width: 400 }} key={index}>
-                            <CardMedia
-                                sx={{ height: 240 }}
-                                image="/placeholder.webp"
-                                title="green iguana"
-                            />
-                            <CardContent>
-                                <Typography gutterBottom variant="h5" component="div">
-                                    {event.name}
-                                </Typography>
-                                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                    {event.description}
-                                </Typography>
-                                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                    {formatter(event.price)}
-                                </Typography>
-                                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                    {event.location}
-                                </Typography>
-                            </CardContent>
-                            <CardActions>
-                                <IconButton color='primary' aria-label="share">
-                                    <ShareIcon />
-                                </IconButton>
+                <Stack direction={'row'} spacing={2} sx={{ justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap' }} useFlexGap>
+                    {
+                        events.length > 0 && events.map((event, index) => (
+                            <Card sx={{ width: 400 }} key={index}>
+                                <CardMedia
+                                    sx={{ height: 240 }}
+                                    image={event.image ? event.image : '/placeholder.webp'}
+                                    title="green iguana"
+                                />
+                                <CardContent>
+                                    <Typography gutterBottom variant="h5" component="div">
+                                        {event.name}
+                                    </Typography>
+                                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                                        {event.description}
+                                    </Typography>
+                                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                                        {formatter(event.price)}
+                                    </Typography>
+                                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                                        {event.location}
+                                    </Typography>
+                                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                                        Quedan <strong>{event.remainingTickets}</strong> cupos
+                                    </Typography>
+                                </CardContent>
+                                <CardActions>
+                                    <IconButton color='primary' aria-label="share">
+                                        <ShareIcon />
+                                    </IconButton>
 
-                                <IconButton color='primary' aria-label="info">
-                                    <InfoIcon />
-                                </IconButton>
+                                    <IconButton color='primary' aria-label="info">
+                                        <InfoIcon />
+                                    </IconButton>
 
-                            </CardActions>
-                        </Card>
-                    ))
-                }
+                                </CardActions>
+                            </Card>
+                        ))
+                    }
+                </Stack>
             </Box>
 
         </Box >
