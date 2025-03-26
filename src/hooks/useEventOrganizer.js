@@ -7,11 +7,9 @@ export const useEventsOrganizer = () => {
     const [eventsOrganizer, setEventsOrganizer] = useState([])
 
     const getEventOrganizerByOwner = async (owner) => {
-        console.log(owner)
         const { data } = await conectateApi.get(`/event-organizer/owner/${owner}`)
         const arr = []
         arr.push(data)
-        console.log(arr)
         setEventsOrganizer(arr)
     }
 
@@ -20,10 +18,16 @@ export const useEventsOrganizer = () => {
         setEventsOrganizer(data)
     }
 
+    const createEventOrganizer = async (data) => {
+        const res = await conectateApi.post("/event-organizer", data)
+        return res.data
+    }
+
     return {
         eventsOrganizer,
         getEventOrganizerByOwner,
-        getEventsOrganizer
+        getEventsOrganizer,
+        createEventOrganizer
     }
 
 }

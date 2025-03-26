@@ -6,15 +6,14 @@ import { useForm } from "react-hook-form";
 
 export const ModalEvent = ({ event, open, onClose, addMode = false, handleAdd, handleEdit }) => {
 
-    console.log(event)
-    const { register, getValues } = useForm({
+    const { register, getValues, setValue } = useForm({
         defaultValues: {
             name: event?.name || '',
             description: event?.description || '',
             price: event?.price || '',
             location: event?.location || '',
-            capacity: event?.capacity || '',
-            remainingTickets: event?.remainingTickets || '',
+            capacity: event?.capacity || '0',
+            remainingTickets: event?.remainingTickets || '0',
             imageUrl: event?.imageUrl || '',
             startDate: event?.startDate || dayjs().add(1, 'day').format(),
             endDate: event?.endDate || dayjs().add(2, 'day').format()
@@ -23,20 +22,21 @@ export const ModalEvent = ({ event, open, onClose, addMode = false, handleAdd, h
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        const { capacity, description, endDate, imageUrl, location, name, price, remainingTickets, startDate } = getValues()
+        const { capacity, description, endDate, image, location, name, price, remainingTickets, startDate } = getValues()
         const event = {
             capacity,
             description,
-            endDate,
-            imageUrl,
+            image,
             location,
             name,
             price,
             remainingTickets,
-            startDate
+            startDate,
+            endDate
         }
+
         if (addMode) {
-            
+            handleAdd(event)
         }
         else {
             handleEdit(event)
@@ -44,10 +44,10 @@ export const ModalEvent = ({ event, open, onClose, addMode = false, handleAdd, h
     }
 
     return (
-        <Modal open={open} onClose={onClose} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <Modal open={open} onClose={onClose} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000 }}>
             <Paper sx={{ width: 400 }} component={'form'} onSubmit={handleSubmit}>
                 <Box sx={{ p: 2 }}>
-                    <Typography variant='h4'>Editar evento</Typography>
+                    <Typography variant='h4'>{addMode ? 'Crear Evento' : 'Editar evento'}</Typography>
                     <Stack spacing={2}>
                         <TextField label='Nombre del evento' {...register('name')} variant='outlined' required />
                         <TextField label='Descripción' {...register('description')} variant='outlined' required />
@@ -57,10 +57,10 @@ export const ModalEvent = ({ event, open, onClose, addMode = false, handleAdd, h
                         <TextField label='Cupos Restantes' type='number' {...register('remainingTickets')} variant='outlined' required />
                         <TextField label='Image Url' type='text' {...register('image')} variant='outlined' />
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
-                            <DateTimePicker minDate={dayjs().add(1, 'day')} defaultValue={dayjs(event.startDate)} {...register('startDate')} label="Fecha y Hora de Inicio" />
+                            <DateTimePicker format="DD/MM/YYYY HH:mm A" minDate={dayjs().add(1, 'day')} defaultValue={!addMode ? dayjs(event.startDate) : dayjs().add(1, 'day')} label="Fecha y Hora de Inicio" onChange={(value) => setValue('startDate', dayjs(value).toDate().toString())} />
                         </LocalizationProvider>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
-                            <DateTimePicker minDate={dayjs().add(1, 'day')} defaultValue={dayjs(event.endDate)} label="Fecha y Hora de Finalización" />
+                            <DateTimePicker format="DD/MM/YYYY HH:mm A" minDate={dayjs().add(1, 'day')} defaultValue={!addMode ? dayjs(event.endDate) : dayjs().add(1, 'day')} label="Fecha y Hora de Finalización" onChange={(value) => setValue('endDate', dayjs(value).toDate().toString())} />
                         </LocalizationProvider>
                         <Button variant='contained' color='primary' type="submit">Guardar</Button>
                     </Stack>

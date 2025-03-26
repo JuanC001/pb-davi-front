@@ -87,7 +87,7 @@ export const Home = () => {
                             <Card sx={{ width: 400 }} key={index}>
                                 <CardMedia
                                     sx={{ height: 240 }}
-                                    image="/placeholder.webp"
+                                    image={event.image ? event.image : '/placeholder.webp'}
                                     title="green iguana"
                                 />
                                 <CardContent>

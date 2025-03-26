@@ -11,6 +11,11 @@ export const useEvents = (handleFetch = true) => {
         setEvents(data)
     }
 
+    const createEvent = async (data) => {
+        const res = await conectateApi.post("/events", data)
+        return res
+    }
+
     const updateEvent = async (id, data) => {
         const res = await conectateApi.put(`/events/${id}`, data)
         return res
@@ -30,8 +35,9 @@ export const useEvents = (handleFetch = true) => {
     return {
         events,
         getEvents,
+        createEvent,
         updateEvent,
-        deleteEvent
+        deleteEvent,
     }
 
 }
