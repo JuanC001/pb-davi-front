@@ -14,7 +14,7 @@ export const ModalEvent = ({ event, open, onClose, addMode = false, handleAdd, h
             location: event?.location || '',
             capacity: event?.capacity || '0',
             remainingTickets: event?.remainingTickets || '0',
-            imageUrl: event?.imageUrl || '',
+            image: event?.image || '',
             startDate: event?.startDate || dayjs().add(1, 'day').format(),
             endDate: event?.endDate || dayjs().add(2, 'day').format()
         }
