@@ -1,32 +1,37 @@
 import { AppBar, Box, Button, Collapse, Container, Drawer, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, MenuItem, Stack, Toolbar, Typography } from '@mui/material'
-import React, { useState } from 'react'
-import { useLocation } from 'react-router-dom';
+import React, { useContext, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import MenuIcon from '@mui/icons-material/Menu';
 import RssFeedIcon from '@mui/icons-material/RssFeed';
 import LogoutIcon from '@mui/icons-material/Logout';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import PersonIcon from '@mui/icons-material/Person';
+import { UserContext } from '../context/UserContext';
 
 export const NavBarComponent = () => {
 
-    const [loggedIn, setLoggedIn] = useState(false)
+    const { user, authStatus, logout } = useContext(UserContext)
     const [drawerOpen, setDrawerOpen] = useState(false)
     const location = useLocation()
+    const navigate = useNavigate()
 
     return (
         <AppBar position="sticky">
             <Container>
                 <Toolbar>
                     <Box sx={{ flexGrow: 1 }}>
-                        <Stack direction={'column'} onClick={() => console.log('click')} sx={{ cursor: 'pointer' }}>
-                            <Typography variant="h6" sx={{
-                                letterSpacing: {
-                                    xs: 1,
-                                    sm: 2,
-                                    md: 8,
-                                }, display: 'flex', alignItems: 'center'
-                            }}>
+                        <Stack direction={'column'}>
+                            <Typography variant="h6"
+                                onClick={() => navigate('/')}
+                                sx={{
+                                    cursor: 'pointer',
+                                    letterSpacing: {
+                                        xs: 1,
+                                        sm: 2,
+                                        md: 8,
+                                    }, display: 'flex', alignItems: 'center'
+                                }}>
                                 ConectaTE
                                 <RssFeedIcon />
                             </Typography>
@@ -41,15 +46,15 @@ export const NavBarComponent = () => {
                         </Stack>
                     </Box>
                     {
-                        location.pathname !== '/login' && !loggedIn && <LoginButton onClick={() => setLoggedIn(true)} />
+                        location.pathname !== '/login' && authStatus !== true && <LoginButton onClick={() => navigate('/login')} />
                     }
 
                     {
-                        location.pathname !== '/login' && loggedIn && <LoggedInformation logOut={() => setLoggedIn(false)} />
+                        location.pathname !== '/login' && authStatus && <LoggedInformation logOut={logout} />
                     }
 
                     {
-                        location.pathname !== '/login' && loggedIn && <IconButton
+                        location.pathname !== '/login' && authStatus && <IconButton
                             onClick={() => setDrawerOpen(!drawerOpen)}
                             sx={{ display: { xs: 'flex', sm: 'none' }, color: 'white' }}>
                             <MenuIcon />
@@ -67,13 +72,13 @@ export const NavBarComponent = () => {
 }
 
 const LoginButton = ({ onClick }) => {
-    return <Button variant="text" color='white' onClick={onClick}>Log In</Button>
+    return <Button variant="text" color='white' onClick={onClick}>Iniciar Sesión</Button>
 }
 const LoggedInformation = ({ logOut, profile, reserves }) => {
     return <Stack direction={'row'} sx={{ display: { xs: 'none', sm: 'flex' } }}>
-        <MenuItem color='white' sx={{ gap: 1 }} onClick={profile}> Profile<PersonIcon fontSize='small' /></MenuItem>
-        <MenuItem color='white' sx={{ gap: 1 }} onClick={reserves}>My reserves <CalendarMonthIcon fontSize='small' /></MenuItem>
-        <MenuItem color='white' onClick={logOut} sx={{ gap: 1 }}> Log out <LogoutIcon fontSize='small' /></MenuItem>
+        <MenuItem color='white' sx={{ gap: 1 }} onClick={profile}> Perfil<PersonIcon fontSize='small' /></MenuItem>
+        <MenuItem color='white' sx={{ gap: 1 }} onClick={reserves}>Mis Eventos <CalendarMonthIcon fontSize='small' /></MenuItem>
+        <MenuItem color='white' onClick={logOut} sx={{ gap: 1 }}> Cerrar Sesión <LogoutIcon fontSize='small' /></MenuItem>
     </Stack>
 }
 
